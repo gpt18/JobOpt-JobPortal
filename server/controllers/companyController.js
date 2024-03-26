@@ -26,3 +26,26 @@ exports.handleGetCompanyBalance = async (req, res) => {
 
 
 }
+
+exports.handleGetCompanyProfile = async (req, res) => {
+    const cid = req.params.id;
+
+    if (!cid) return res.json({
+        success: false,
+        message: "Data missing",
+    });
+
+    try {
+        const company = await Company.findById(cid);
+
+        return res.json({
+            cid,
+            success: true,
+            message: "Fetched Company Profile",
+            company
+        });
+    } catch (error) {
+        console.log(error.message);
+        return res.json({success: false, message: "Invalid Request", error: error.message})
+    }
+}

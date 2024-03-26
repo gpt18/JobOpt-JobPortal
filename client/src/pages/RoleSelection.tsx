@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { selectRole } from "@/services/createProfile";
+import { selectRole } from "@/services/register";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 

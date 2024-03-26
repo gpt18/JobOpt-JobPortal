@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
 
     return (
         <>
-            <div id="header" className=" sticky">
+            <div id="header" className="top-0 sticky">
                 <div className="p-4 bg-black text-white flex flex-col justify-center text-center sm:flex-row sm:justify-between">
                     <div className="text-3xl">
                         Company Dashboard

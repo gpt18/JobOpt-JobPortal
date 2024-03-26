@@ -12,7 +12,7 @@ const companySchema = new mongoose.Schema({
     websiteLink: {
         type: String,
     },
-    teamSize: {
+    companySize: {
         type: String,
     },
     companyLogo: {

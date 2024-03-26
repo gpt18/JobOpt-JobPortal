@@ -8,7 +8,9 @@ import { Landing } from './layout/Landing';
 import { Toaster } from "@/components/ui/toaster"
 import { RoleSelection } from './pages/RoleSelection';
 import { CompanyHome } from './layout/CompanyHome';
-import { CompanyRegistration } from './pages/CompanyRegistration';
+import { CompanyRegistration } from './pages/company/Registration';
+import { CompanyDashboard } from './pages/company/Dashboard';
+import { CompanyAccount } from './pages/company/Account';
 
 const router = createBrowserRouter([
   {
@@ -29,18 +31,27 @@ const router = createBrowserRouter([
       },
       {
         path: 'select-role',
-        element: <RoleSelection/>
+        element: <RoleSelection />
       }
     ]
   },
   {
     path: '/company',
-    element: <CompanyHome/>,
+    element: <CompanyHome />,
     children: [
       {
+        path: '',
+        element: <CompanyDashboard />
+      },
+      {
         path: 'create-profile',
-        element: <CompanyRegistration/>
-      }
+        element: <CompanyRegistration />
+      },
+      {
+        path: 'my-account',
+        element: <CompanyAccount />
+      },
+
     ]
   },
   {

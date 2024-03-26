@@ -8,3 +8,11 @@ export const getCompanyBalance = async (payload: {
     const res = await axios.get(`${BASE_URL}/balance/${payload.cid}`);
     return res;
 }
+
+
+export const getCompanyProfile = async (payload: {
+    cid: string;
+}) => {
+    const res = await axios.get(`${BASE_URL}/${payload.cid}`);
+    return res;
+}

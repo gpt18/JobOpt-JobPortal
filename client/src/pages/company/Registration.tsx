@@ -22,9 +22,14 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { createCompanyProfile } from "@/services/register";
+import { toast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 
 export const CompanyRegistration: React.FC = () => {
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         companyName: '',
@@ -35,13 +40,28 @@ export const CompanyRegistration: React.FC = () => {
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(formData => ({ ...formData, [e.target.name]: e.target.value }));
-        console.log(formData)
     }
 
-    const handleFormSubmit = (e: React.FormEvent) => {
+    const handleFormSubmit =async (e: React.FormEvent) => {
         e.preventDefault();
 
-        
+        try {
+            const { data } = await createCompanyProfile(formData);
+            toast({
+                title: data.message,
+                description: data.reward ? `You have earned ₹${data.reward} for creating profile` : undefined,
+            });
+
+            navigate('/company', { replace: true });
+
+            
+        } catch (error: any) {
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: error.message,
+            });
+        }
 
     }
 
@@ -55,17 +75,17 @@ export const CompanyRegistration: React.FC = () => {
                         <CardDescription>Provide your company details.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form className="space-y-4 my-3" onSubmit={() => handleFormSubmit}>
+                        <form className="space-y-4 my-3" onSubmit={handleFormSubmit}>
                             <div className="space-y-1">
-                                <Label htmlFor="companyName">Company Name</Label>
-                                <Input id="companyName" name="companyName" type="text" placeholder="Example Company Pvt. Ltd" onChange={handleOnChange} />
+                                <Label htmlFor="companyName">Company Name* (+₹25)</Label>
+                                <Input id="companyName" name="companyName" type="text" placeholder="Example Company Pvt. Ltd" onChange={handleOnChange} required/>
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="websiteLink">Website Link</Label>
+                                <Label htmlFor="websiteLink">Website Link (+₹50)</Label>
                                 <Input id="websiteLink" name="websiteLink" type="text" placeholder="www.example.com" onChange={handleOnChange} />
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="companySize">Company Size</Label>
+                                <Label htmlFor="companySize">Company Size (+₹20)</Label>
                                 <Select name='companySize' onValueChange={(value) => (setFormData(formData => ({...formData, companySize: value})))} defaultValue={formData.companySize}>
                                     <SelectTrigger className="w-[180px]" id='companySize' >
                                         <SelectValue placeholder="Select company size" />
@@ -81,7 +101,7 @@ export const CompanyRegistration: React.FC = () => {
                                 </Select>
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="companyLogo">Company Logo (Link)</Label>
+                                <Label htmlFor="companyLogo">Company Logo (Link) (+₹50)</Label>
                                 <Input id="companyLogo" name="companyLogo" type="text" placeholder="http://example.com/logo.jpg" onChange={handleOnChange} />
                             </div>
                             <div className="flex items-center space-x-2">

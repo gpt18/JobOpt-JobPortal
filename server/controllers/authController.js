@@ -123,7 +123,8 @@ exports.handleSendOtp = async (req, res) => {
     } catch (error) {
         return res.json({
             success: false,
-            message: "Unable to send OTP. Try again."
+            message: "Unable to send OTP. Try again.",
+            error: error.message,
         });
     }
 };
