@@ -18,7 +18,12 @@ const companySchema = new mongoose.Schema({
     companyLogo: {
         type: String,
     },
-    postRoles: [mongoose.Types.ObjectId],
+    postRoles: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'JOB'
+        }
+    ],
     balance: {
         type: Number,
         default: 0

@@ -15,7 +15,7 @@ exports.mailSender = async (email, title, body) => {
 
         
         let info = await transporter.sendMail({
-            from: `anchors.in - Admin <${process.env.MAIL_CLIENT_USER_EMAIL}>`,
+            from: `G. Prajapati - Admin <${process.env.MAIL_CLIENT_USER_EMAIL}>`,
             to: `${email}`,
             subject: `${title}`,
             html: `${body}`,

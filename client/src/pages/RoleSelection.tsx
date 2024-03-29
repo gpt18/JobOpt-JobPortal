@@ -18,16 +18,26 @@ export const RoleSelection: React.FC = () => {
                 description: data.message
             });
 
-            localStorage.setItem('role', role);
-            localStorage.setItem('cid', data.cid);
+            if (data.success) {
+                localStorage.setItem('role', data.role);
 
-            switch (role) {
-                case 'student':
-                    navigate('/student/create-profile', {replace:true});
-                    break;
-                case 'company':
-                    navigate('/company/create-profile', {replace:true});
-                    break;
+                switch (data.role) {
+                    case 'student':
+                        if(data.profile) navigate('/student', { replace: true });
+                        else navigate('login/student/create-profile', { replace: true });
+                        break;
+                    case 'company':
+                        if(data.profile) navigate('/company', { replace: true });
+                        else navigate('login/company/create-profile', { replace: true });
+                        break;
+                }
+            }else{
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: data.message,
+                });
+                navigate('/login', { replace: true })
             }
 
         }
@@ -37,7 +47,7 @@ export const RoleSelection: React.FC = () => {
                 title: "Uh oh! Something went wrong.",
                 description: "Login again with your email",
             });
-            navigate('/login', {replace:true})
+            navigate('/login', { replace: true })
         }
 
     }

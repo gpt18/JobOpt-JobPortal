@@ -5,7 +5,7 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { useToast } from "@/components/ui/use-toast";
-import { verifyOtp } from "@/services/auth";
+import { sendOtp, verifyOtp } from "@/services/auth";
 import { ArrowLeft } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -14,14 +14,15 @@ import { useNavigate } from "react-router-dom";
 export const OtpVerify: React.FC = () => {
     const navigate = useNavigate();
 
-    const [otp, setOtp] = React.useState("");
-    const [timeLeft, setTimeLeft] = useState(5 * 60);
+    const [otp, setOtp] = useState("");
+    const [timeLeft, setTimeLeft] = useState(30);
     const [email, setEmail] = useState("");
     const { toast } = useToast();
 
     React.useEffect(() => {
         const d = localStorage.getItem("email");
         if (d) setEmail(d);
+        else navigate('/login', { replace: true });
     }, [])
 
     React.useEffect(() => {
@@ -46,23 +47,45 @@ export const OtpVerify: React.FC = () => {
                 description: `${data.message}`,
             });
 
-            if(data.success){
-                if(!data.role){
-                    navigate('/login/select-role', {replace: true});
-                }else if(data.role){
-                   switch (data.role){
-                    case 'student':
-                        navigate('/student', {replace: true});
-                        break;
-                    case 'company':
-                        navigate('/company', {replace: true});
-                        break;
-                   }
+            if (data.success) {
+                if (!data.role) {
+                    navigate('/login/select-role', { replace: true });
+                } else if (data.role) {
+                    localStorage.setItem('role', data.role);
+                    switch (data.role) {
+                        case 'student':
+                            navigate('/student', { replace: true });
+                            break;
+                        case 'company':
+                            navigate('/company', { replace: true });
+                            break;
+                    }
                 }
             }
 
-        } catch (error:any) {
-            console.log(error.message);
+        } catch (error: any) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: `${error.message}`,
+            });
+        }
+    }
+
+    const handleResendOTP = async () => {
+        try {
+            const { data } = await sendOtp({ email });
+
+            toast({
+                description: `${data.message}`
+            });
+
+            setTimeLeft(30);
+        } catch (error: any) {
+            toast({
+                variant: "destructive",
+                description: `${error.message}`
+            });
         }
     }
 
@@ -96,7 +119,7 @@ export const OtpVerify: React.FC = () => {
                     {
                         timeLeft != 0 ?
                             <div>Time left: {Math.floor(timeLeft / 60)}:{timeLeft % 60 < 10 ? '0' : ''}{timeLeft % 60}</div>
-                            : <Button variant={"link"}>Re-Send</Button>
+                            : <Button variant={"link"} className="text-blue-800" type="button" onClick={() => handleResendOTP()}>Re-Send</Button>
                     }
                     <Button type="submit" className="mt-3" disabled={!(otp.length === 6)}>Submit OTP</Button>
                 </div>

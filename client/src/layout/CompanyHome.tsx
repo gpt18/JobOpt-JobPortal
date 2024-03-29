@@ -1,24 +1,58 @@
 import { Footer } from "@/components/cFooter";
 import { Header } from "@/components/cHeader";
 import { CSideBar } from "@/components/cSideBar";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import React from "react";
-import { Outlet } from "react-router-dom";
+import { getCompanyProfile } from "@/services/company";
+import { useAppDispatch } from "@/state/hooks";
+import React, { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { setProfile } from "@/state/slices/companySlice";
+import { toast } from "@/components/ui/use-toast";
+
 
 
 export const CompanyHome: React.FC = () => {
+    const navigate = useNavigate();
 
-    React.useEffect(() => {
+    const dispatch = useAppDispatch();
 
-    }, []);
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const email = localStorage.getItem('email');
+            if(email){
+                try {
+                    const { data } = await getCompanyProfile({email});
+                    dispatch(setProfile({
+                        cid: data.cid,
+                        email: data.email,
+                        balance: data.balance,
+                        name: data.name,
+                        website: data.website,
+                        size: data.size,
+                        logo: data.logo,
+                    }))
+                } catch (error: any) {
+                    toast({
+                        variant: "destructive",
+                        title: "Uh oh! Something went wrong.",
+                        description: error.message,
+                    });
+                    navigate('/login', { replace: true })
+                }
+            }
+            else{
+                navigate('/login', { replace: true })
+            }
+        }
+
+        fetchProfile();
+    }, [])
 
     return (
         <>
             <div className="bg-indigo-100 min-h-screen relative">
                 <div id="company-home">
                     <Header />
-                    <div id='main-body' className="container max-w-4xll mx-auto p-2 lg:p-4 ">
+                    <div id='main-body' className="container max-w-4xll mx-auto p-2 lg:p-4">
                         <div className="bg-white rounded-md p-4">
                             <div className="grid md:grid-cols-4 gap-4">
                                 <div className="col-span-4 md:col-span-1">

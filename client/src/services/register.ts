@@ -15,8 +15,12 @@ export const createCompanyProfile = async (payload: {
     websiteLink: string;
     companySize: string;
     companyLogo: string;
+    email?: string;
 }) => {
-    const cid = localStorage.getItem('cid');
-    const res = await axios.post(`${BASE_URL}/company/${cid}`, payload);
+    const email = localStorage.getItem('email');
+    if(email) {
+        payload = {...payload, email};
+    }
+    const res = await axios.post(`${BASE_URL}/company/create`, payload);
     return res;
 }

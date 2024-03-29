@@ -3,7 +3,7 @@ const { handleSelectRole, handleCreateCompanyProfile } = require('../../controll
 const router =  express.Router();
 
 router.post('/select-role', handleSelectRole);
-router.post('/company/:id', handleCreateCompanyProfile);
+router.post('/company/create', handleCreateCompanyProfile);
 
 
 module.exports = router

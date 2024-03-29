@@ -29,7 +29,9 @@ export const Register: React.FC = () => {
             navigate('verify-otp');
 
         } catch (error: any) {
-            console.log(error.message);
+            toast({
+                description: `${error.message}`
+            });
             setLoading(false);
         }
 

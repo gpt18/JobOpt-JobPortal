@@ -11,6 +11,8 @@ import { CompanyHome } from './layout/CompanyHome';
 import { CompanyRegistration } from './pages/company/Registration';
 import { CompanyDashboard } from './pages/company/Dashboard';
 import { CompanyAccount } from './pages/company/Account';
+import { Provider } from 'react-redux'
+import { store } from './state/store';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: 'select-role',
         element: <RoleSelection />
+      },
+      {
+        path: 'company/create-profile',
+        element: <CompanyRegistration />
       }
     ]
   },
@@ -42,10 +48,6 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <CompanyDashboard />
-      },
-      {
-        path: 'create-profile',
-        element: <CompanyRegistration />
       },
       {
         path: 'my-account',
@@ -69,8 +71,11 @@ function App() {
 
   return (
     <>
-      <Toaster />
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <Toaster />
+        <RouterProvider router={router} />
+      </Provider>
+
     </>
   )
 }

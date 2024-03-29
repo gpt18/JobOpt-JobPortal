@@ -1,38 +1,11 @@
-import { getCompanyBalance } from "@/services/company";
+import { useAppSelector } from "@/state/hooks";
 import { IndianRupee, MailIcon } from "lucide-react";
 import React from "react";
 
 export const Header: React.FC = () => {
 
-    const [companyData, setCompanyData] = React.useState({
-        email: '',
-        balance: 0,
-    });
-
-    React.useEffect(() => {
-        const handleemailset = () => {
-            const email = localStorage.getItem('email');
-            const cid = localStorage.getItem('cid');
-
-            if (email) {
-                setCompanyData(companyData => ({ ...companyData, email }));
-            }
-            return cid;
-        }
+    const { balance, email } = useAppSelector(state => state.company);
     
-        const handlegetbalance =  async (cid: string | null) => {
-            if (cid) {
-                const {data} = await getCompanyBalance({cid});
-                if(data.balance) {
-                    setCompanyData(companyData => ({ ...companyData, balance: data.balance }));
-                }
-            }
-        }
-    
-        const cid = handleemailset();
-        handlegetbalance(cid);
-    }, [])
-
     return (
         <>
             <div id="header" className="top-0 sticky">
@@ -43,12 +16,13 @@ export const Header: React.FC = () => {
                     <div className="flex flex-col py-2 sm:p-0">
                         <div className="flex justify-center sm:justify-end gap-2">
                             <MailIcon />
-                            {companyData.email}
+                            {email}
                         </div>
-                        <div className="flex justify-center sm:justify-end gap-2">
-                            <IndianRupee />
-                            Balance: {companyData.balance}
-
+                        <div className="flex justify-center sm:justify-end">
+                            <div>Balance: </div>
+                            <div className="flex justify-center items-center">
+                            <IndianRupee size={16}/>{balance}
+                            </div>
                         </div>
                     </div>
                 </div>

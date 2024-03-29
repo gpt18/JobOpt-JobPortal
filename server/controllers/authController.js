@@ -14,11 +14,11 @@ const handleMissingData = (res) => {
 
 // Function to handle OTP verification
 const handleOtpVerification = async (res, userotp, otp) => {
-    if(userotp.otp === otp){
+    if (userotp.otp === otp) {
         await UserOTP.findByIdAndDelete(userotp._id);
         let user = await User.findOne({ email: userotp.email });
 
-        if(user){
+        if (user) {
             return res.json({
                 success: true,
                 message: "OTP verified Successfully",
@@ -26,7 +26,7 @@ const handleOtpVerification = async (res, userotp, otp) => {
                 profile: user.profile,
             });
         }
-        else{
+        else {
             user = await User.create({
                 email: userotp.email
             });
@@ -38,7 +38,7 @@ const handleOtpVerification = async (res, userotp, otp) => {
             });
         }
     }
-    else{
+    else {
         return res.json({
             success: false,
             message: "Wrong OTP"
@@ -58,7 +58,7 @@ const handleExpiredOtp = (res) => {
 exports.handleVerifyOtp = async (req, res) => {
     const { email, otp } = req.body;
 
-    if(!email || !otp){
+    if (!email || !otp) {
         return handleMissingData(res);
     }
 
@@ -96,7 +96,7 @@ exports.handleSendOtp = async (req, res) => {
         });
 
         if (!emailOtp) {
-            
+
             const userOtpPayload = {
                 email,
                 otp,
@@ -108,9 +108,19 @@ exports.handleSendOtp = async (req, res) => {
         }
 
         const info = await mailSender(
-            email, 
-            "Email Verification", 
-            `Your One-Time Password for login/register is OTP: <b>${otp}</b> </br> <p>Only Valid for 5 Minutes.</p>`);
+            email,
+            "Email Verification - OTP",
+            `<p>Dear User <${email}>,</p>
+
+            <p>We received a request for a One-Time Password (OTP) from your account. Your OTP is: <b>${otp}</b></p>
+
+            <p>Please note, this OTP is valid for 5 minutes only. If you did not make this request, please ignore this email or contact our support team immediately.</p>
+
+            <p>Thank you for using our services!</p>
+
+            <p>Best Regards,</p>
+            <p>G. Prajapati</p>
+            <p>(anchors.in assignment)</p>`);
 
         await UserOTP.findByIdAndUpdate(emailOtp._id, { $set: { messageId: info.messageId } });
 

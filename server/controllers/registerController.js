@@ -1,7 +1,7 @@
 const Company = require("../models/company");
 const User = require("../models/registerdUser");
 
-const INITIAL_BALANCE = 200;
+const INITIAL_BALANCE_COMPANY = 200;
 const ROLE_ALREADY_SELECTED_MESSAGE = "Role already selected";
 const USER_NOT_FOUND_MESSAGE = "User not found. Login again for new registration.";
 const INCOMPLETE_DATA_MESSAGE = "Incomplete data provided.";
@@ -14,23 +14,23 @@ const COMPANY_LOGO_REWARD = 50;
 
 
 exports.handleCreateCompanyProfile = async (req, res) => {
-    const { companyName, websiteLink, companySize, companyLogo } = req.body;
-    const cid = req.params.id;
+    const { companyName, websiteLink, companySize, companyLogo, email } = req.body;
 
-    if (!companyName) {
+
+    if (!email || !companyName) {
         return res.json({
             success: false,
-            message: "Company Name is required",
+            message: "Missing data. Please provide the company name and email.",
         });
     }
 
     let company;
     try {
-        company = await Company.findOne({ _id: cid });
+        company = await Company.findOne({ email });
     } catch (error) {
         return res.json({
             success: false,
-            message: "Invalid Company ID",
+            message: "Invalid Request",
             error: error.message
         });
     }
@@ -100,9 +100,19 @@ exports.handleCreateCompanyProfile = async (req, res) => {
     }
 
     company.balance += reward;
-    company.save();
 
-    res.json({
+    try {
+        await User.findOneAndUpdate({ email }, { profile: true });
+        company.save();
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "Invalid Request",
+            error: error.message
+        });
+    }
+
+    return res.json({
         success: true,
         message: "Company Profile Updated Successfully",
         reward,
@@ -132,25 +142,53 @@ exports.handleSelectRole = async (req, res) => {
         }
 
         if (user.role) {
-            const company = await Company.findOne({ email: user.email });
-            return sendResponse(res, false, ROLE_ALREADY_SELECTED_MESSAGE, company._id);
+            return res.json({
+                success: true,
+                message: "Role already selected. You can't change the role once selected.",
+                role: user.role,
+                profile: user.profile,
+            });
         }
 
         user.role = role;
         await user.save();
 
-        const newCompany = await Company.create({ email: user.email, balance: INITIAL_BALANCE });
+        if (role === "company") {
+            const company = await Company.findOne({ email });
+            if (company) {
+                return res.json({
+                    success: true,
+                    message: `Email already registered.`,
+                    cid: company._id,
+                    role: user.role,
+                    profile: user.profile,
+                });
+            }
+            const newCompany = await Company.create({ email: user.email, balance: INITIAL_BALANCE_COMPANY });
 
-        newCompany.accountHistory.push({
-            amount: INITIAL_BALANCE,
-            type: "credit",
-            date: new Date(),
-            reason: "Reward for registration."
+            newCompany.accountHistory.push({
+                amount: INITIAL_BALANCE_COMPANY,
+                type: "credit",
+                date: new Date(),
+                reason: "Reward for registration."
+            });
+
+            newCompany.save();
+
+            return res.json({
+                success: true,
+                message: `Role selected successfully. You earn Rs. ${INITIAL_BALANCE_COMPANY} as a registration reward.`,
+                cid: newCompany._id,
+                role: user.role,
+                profile: user.profile,
+            });
+
+        }
+
+        return res.json({
+            success: false,
+            message: "Invalid role selected",
         });
-
-        newCompany.save();
-
-        return sendResponse(res, true, `You earn Rs. ${INITIAL_BALANCE} as a registration reward.`, newCompany._id);
     } catch (error) {
         console.error(error);
         return sendResponse(res, false, "An error occurred.");

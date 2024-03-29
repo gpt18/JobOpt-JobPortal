@@ -25,6 +25,9 @@ import { useState } from "react";
 import { createCompanyProfile } from "@/services/register";
 import { toast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Trophy } from "lucide-react";
+
 
 
 export const CompanyRegistration: React.FC = () => {
@@ -42,7 +45,7 @@ export const CompanyRegistration: React.FC = () => {
         setFormData(formData => ({ ...formData, [e.target.name]: e.target.value }));
     }
 
-    const handleFormSubmit =async (e: React.FormEvent) => {
+    const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
@@ -54,7 +57,7 @@ export const CompanyRegistration: React.FC = () => {
 
             navigate('/company', { replace: true });
 
-            
+
         } catch (error: any) {
             toast({
                 variant: "destructive",
@@ -69,6 +72,14 @@ export const CompanyRegistration: React.FC = () => {
     return (
         <>
             <div className="py-5">
+                <Alert className="my-3 sm:my-0 sm:mb-5 ">
+                    <Trophy className="h-4 w-4" />
+                    <AlertTitle>Congratulations!</AlertTitle>
+                    <AlertDescription>
+                    You earn ₹200 as a registration reward. Complete your profile to unlock even more rewards.
+                    </AlertDescription>
+                </Alert>
+
                 <Card className="w-[350px] mx-auto">
                     <CardHeader>
                         <CardTitle>Create Profile</CardTitle>
@@ -78,7 +89,7 @@ export const CompanyRegistration: React.FC = () => {
                         <form className="space-y-4 my-3" onSubmit={handleFormSubmit}>
                             <div className="space-y-1">
                                 <Label htmlFor="companyName">Company Name* (+₹25)</Label>
-                                <Input id="companyName" name="companyName" type="text" placeholder="Example Company Pvt. Ltd" onChange={handleOnChange} required/>
+                                <Input id="companyName" name="companyName" type="text" placeholder="Example Company Pvt. Ltd" onChange={handleOnChange} required />
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="websiteLink">Website Link (+₹50)</Label>
@@ -86,7 +97,7 @@ export const CompanyRegistration: React.FC = () => {
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="companySize">Company Size (+₹20)</Label>
-                                <Select name='companySize' onValueChange={(value) => (setFormData(formData => ({...formData, companySize: value})))} defaultValue={formData.companySize}>
+                                <Select name='companySize' onValueChange={(value) => (setFormData(formData => ({ ...formData, companySize: value })))} defaultValue={formData.companySize}>
                                     <SelectTrigger className="w-[180px]" id='companySize' >
                                         <SelectValue placeholder="Select company size" />
                                     </SelectTrigger>
@@ -105,13 +116,13 @@ export const CompanyRegistration: React.FC = () => {
                                 <Input id="companyLogo" name="companyLogo" type="text" placeholder="http://example.com/logo.jpg" onChange={handleOnChange} />
                             </div>
                             <div className="flex items-center space-x-2">
-                            <Checkbox id="terms" checked />
-                            <label
-                                htmlFor="terms"
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                                Accept terms and conditions
-                            </label>
+                                <Checkbox id="terms" checked />
+                                <label
+                                    htmlFor="terms"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Accept terms and conditions
+                                </label>
                             </div>
                             <Button type="submit">Submit</Button>
                         </form>
