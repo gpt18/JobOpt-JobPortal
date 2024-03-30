@@ -110,7 +110,7 @@ exports.handleSendOtp = async (req, res) => {
         const info = await mailSender(
             email,
             "Email Verification - OTP",
-            `<p>Dear User <${email}>,</p>
+            `<p>Dear User ${email},</p>
 
             <p>We received a request for a One-Time Password (OTP) from your account. Your OTP is: <b>${otp}</b></p>
 

@@ -134,3 +134,26 @@ exports.handlePostJob = async (req, res) => {
         return res.json({success: false, message: error.message})
     }
 }
+
+exports.handleGetAllJob = async (req, res) => {
+    const cid = req.params.id;
+
+    if (!cid) return res.json({
+        success: false,
+        message: "Data missing",
+    });
+
+    try {
+        const company = await Company.findById(cid).populate("postRoles");
+
+        return res.json({
+            cid,
+            success: true,
+            message: "Fetched Company Job Posts",
+            jobs: company.postRoles
+        });
+    } catch (error) {
+        console.log(error.message);
+        return res.json({success: false, message: "Invalid Request"})
+    }
+}

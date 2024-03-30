@@ -17,7 +17,7 @@ export const getCompanyProfile = async (payload: {
     return res;
 }
 
-export const getAccountHistory = async (payload: {id: string}) => {
+export const getAccountHistory = async (payload: { id: string }) => {
     const res = await axios.get(`${BASE_URL}/account-history/${payload.id}`);
     return res;
 }
@@ -28,7 +28,7 @@ export const calculatePostRR = (payload: {
     location: string;
 }) => {
 
-    return 2*(payload.roleName.length) + 5*(payload.location.length)
+    return 2 * (payload.roleName.length) + 5 * (payload.location.length)
 
 }
 
@@ -45,5 +45,12 @@ export const postJob = async (payload: {
     maxCTC: string;
 }) => {
     const res = await axios.post(`${BASE_URL}/post-job`, payload);
+    return res;
+}
+
+export const getCompanyJobs = async (payload: {
+    cid: string;
+}) => {
+    const res = await axios.get(`${BASE_URL}/all-jobs/${payload.cid}`);
     return res;
 }

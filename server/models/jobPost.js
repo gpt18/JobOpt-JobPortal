@@ -32,7 +32,7 @@ const jobPostSchema = new mongoose.Schema({
         }
     ]
 
-}, {timestamp: true });
+}, { timestamps: true });
 
 const JobPost = mongoose.model('JOB', jobPostSchema);
 

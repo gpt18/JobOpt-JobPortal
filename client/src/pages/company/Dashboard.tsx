@@ -26,11 +26,35 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { useEffect, useState } from "react";
-import { calculatePostRR, getIndianCities, postJob } from "@/services/company";
+import { calculatePostRR, getCompanyJobs, getIndianCities, postJob } from "@/services/company";
 import { setBalance, updatePost } from "@/state/slices/companySlice";
 import { toast } from "@/components/ui/use-toast";
 
 export const CompanyDashboard: React.FC = () => {
+
+    const { cid } = useAppSelector(state => state.company);
+
+    const [jobs, setJobs] = useState([]);
+
+    useEffect(() => {
+        document.title = "Company Dashboard | Job Portal";
+
+        const fetchJobs = async () => {
+            try {
+                const { data } = await getCompanyJobs({ cid });
+                setJobs(data.jobs);
+            } catch (error: any) {
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: error.message,
+                });
+            }
+        }
+
+        if (cid) fetchJobs();
+
+    }, [cid]);
 
 
     return (
@@ -44,12 +68,20 @@ export const CompanyDashboard: React.FC = () => {
                 </div>
                 <div className="my-10">
                     <div className="space-y-4">
-                        <JobCard
-                            title="Software Develpoper Associate role intern"
-                            location="Noida"
-                            minCTC="3.5"
-                            maxCTC="10"
-                            applied={100} />
+
+                        {
+                            [...jobs].reverse().map((job: any) => (
+                                <JobCard
+                                    key={job._id}
+                                    title={job.roleName}
+                                    location={job.location}
+                                    minCTC={job.minCTC}
+                                    maxCTC={job.maxCTC}
+                                    applied={job.appliedCandidates.length}
+                                    rr={job.rr} />
+                            ))
+
+                        }
 
                     </div>
                 </div>
@@ -110,7 +142,7 @@ const AddPostButton = () => {
                 maxCTC
             });
 
-            if(data.success){
+            if (data.success) {
                 dispatch(updatePost({
                     roleName: '',
                     location: '',
@@ -203,7 +235,17 @@ const AddPostButton = () => {
                             {loading ? "Posting..." : "Post"}
                         </Button>
                     </div>
+
                 </SheetHeader>
+                <div className="py-4">
+                    <SheetFooter>
+                        <Button variant={"secondary"}>
+                            <SheetClose>
+                                Close
+                            </SheetClose>
+                        </Button>
+                    </SheetFooter>
+                </div>
             </SheetContent>
         </Sheet>
 
@@ -216,9 +258,10 @@ interface JobCardProps {
     minCTC: string;
     maxCTC: string;
     applied: number;
+    rr: number;
 }
 
-const JobCard = ({ title, location, minCTC, maxCTC, applied }: JobCardProps) => {
+const JobCard = ({ title, location, minCTC, maxCTC, applied, rr }: JobCardProps) => {
     return (
         <div className="border shadow rounded">
             <div className="space-y-2 p-3">
@@ -230,8 +273,12 @@ const JobCard = ({ title, location, minCTC, maxCTC, applied }: JobCardProps) => 
                     <Badge variant="outline">MinCTC: {minCTC} lpa</Badge>
                     <Badge variant="outline">MaxCTC: {maxCTC} lpa</Badge>
                 </div>
-                <div className="flex justify-between">
-                    <Badge variant="outline">Applied: {applied}</Badge>
+                <div className="flex justify-between items-center">
+                    <div className="space-x-2">
+                        <Badge variant="outline">Applied: {applied}</Badge>
+                        <Badge variant="outline" >RR: ₹{rr}</Badge>
+                        <Badge variant={"default"} >Revenue: ₹{applied * rr * 0.5}</Badge>
+                    </div>
                     <div className="">
                         <Button variant={"ghost"} size={"icon"} > <Pencil size={16} /> </Button>
                         <Button variant={"ghost"} size={"icon"} className="text-red-700"> <Trash size={16} /> </Button>

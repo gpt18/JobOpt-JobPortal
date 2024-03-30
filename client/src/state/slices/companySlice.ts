@@ -55,9 +55,10 @@ const companySlice = createSlice({
         },
         setBalance: (state, action) => {
             state.balance = action.payload;
-        }
+        },
+        reset: () => initialState,
     },
 });
 
-export const { setProfile, updatePost, setBalance } = companySlice.actions;
+export const { setProfile, updatePost, setBalance, reset } = companySlice.actions;
 export default companySlice.reducer;

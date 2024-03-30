@@ -12,6 +12,10 @@ export const CompanyAccount: React.FC = () => {
     const [transactions, setTransactions] = React.useState([]);
 
     React.useEffect(() => {
+        document.title = "Company Account | Job Portal";
+    },[]);
+
+    React.useEffect(() => {
         const fetchTransactions = async () => {
             try {
                 const { data } = await getAccountHistory({ id: cid });

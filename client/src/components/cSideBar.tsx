@@ -1,13 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ExternalLink, Pencil } from "lucide-react";
-import { useAppSelector } from "@/state/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/hooks";
+import { reset } from "@/state/slices/companySlice";
 
 export const CSideBar: React.FC = () => {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const { name, website, size, logo } = useAppSelector(state => state.company);
+
+    const handleLogout = () => {
+
+        localStorage.clear();
+        dispatch(reset());
+        navigate('/', { replace: true });
+    }
 
     return (
 
@@ -37,7 +47,7 @@ export const CSideBar: React.FC = () => {
                         <div className="space-x-2">
                             <Button variant={"outline"}><Link to={"/company"}>Home</Link></Button>
                             <Button variant={"outline"}><Link to={"/company/my-account"}>Account</Link></Button>
-                            <Button variant={"outline"}><Link to={"/company"}>Logout</Link></Button>
+                            <Button variant={"outline"} onClick={() => handleLogout()}>Logout</Button>
                         </div>
                     </div>
                 </Card>
@@ -74,7 +84,7 @@ export const CSideBar: React.FC = () => {
                             </div>
                         </div>
                         <div className="row-start-12 p-4 border-t">
-                            <Button variant={"outline"} className="w-full text-start">Logout</Button>
+                            <Button variant={"outline"} className="w-full text-start" onClick={() => handleLogout()}>Logout</Button>
                         </div>
                     </div>
 
