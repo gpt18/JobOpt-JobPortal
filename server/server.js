@@ -33,7 +33,21 @@ app.use('/api/v1/register', registerRouter)
 app.use('/api/v1/company', addAuthPayload, companyRouter)
 app.use('/api/v1/student', addAuthPayload, studentRouter)
 
+app.get('/', (req, res) => {
+    res.send(`<pre>
+    __________________             _____ __________.___ 
+   /  _____/\______   \           /  _  \\______   \   |
+  /   \  ___ |     ___/  ______  /  /_\  \|     ___/   |
+  \    \_\  \|    |     /_____/ /    |    \    |   |   |
+   \______  /|____|             \____|__  /____|   |___|
+          \/                            \/              
+ </pre> `)
+});
 
+
+app.get('*', (req, res) => {
+    res.status(404).send({ message: "Unauthorized" })
+})
 
 
 
