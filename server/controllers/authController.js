@@ -27,12 +27,11 @@ const handleOtpVerification = async (res, userotp, otp) => {
     let token;
     if(user.role){
         token = getJwtToken({ email: user.email, role: user.role });
-        res.cookie('__sessionid', token, { httpOnly: true, secure: true, SameSite: 'none', maxAge: 3600000 });
     }
 
     return res.json({
         success: true,
-        message: user.role ? "OTP verified Successfully! Role already Selected." : "OTP verified Successfully! Proceed with the registration.",
+        message: user.role ? "OTP verified Successfully!" : "OTP verified Successfully! Proceed with the registration.",
         role: user.role,
         token,
         profile: user.profile,
@@ -131,3 +130,11 @@ exports.handleSendOtp = async (req, res) => {
         });
     }
 };
+
+exports.handlePremission = async (req, res) => {
+    return res.status(200).json({
+        message: "Check Premission",
+        success: true,
+        role: req.user.role
+    });
+}

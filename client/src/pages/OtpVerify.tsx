@@ -52,6 +52,7 @@ export const OtpVerify: React.FC = () => {
                     navigate('/login/select-role', { replace: true });
                 } else if (data.role) {
                     localStorage.setItem('role', data.role);
+                    localStorage.setItem('__token', data.token);
                     switch (data.role) {
                         case 'student':
                             if(data.profile) navigate('/student', { replace: true });

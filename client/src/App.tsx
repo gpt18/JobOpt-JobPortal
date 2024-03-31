@@ -2,7 +2,7 @@ import { RouterProvider } from 'react-router-dom'
 import { createBrowserRouter } from 'react-router-dom';
 import { PageNotFound } from './pages/PageNotFound';
 import { Login } from './layout/Login';
-import { Register } from './pages/Register';
+import { Register } from './pages/LoginRegister';
 import { OtpVerify } from './pages/OtpVerify';
 import { Landing } from './layout/Landing';
 import { Toaster } from "@/components/ui/toaster"
@@ -18,6 +18,8 @@ import { StudentRegistration } from './pages/student/Registration';
 import { StudentAccount } from './pages/student/Account';
 import { StudentDashboard } from './pages/student/Dashboard';
 import { AppliedJobs } from './pages/student/Applied';
+import RestrictedRouteTo from './services/permission';
+import { Role } from './lib/role';
 
 const router = createBrowserRouter([
   {
@@ -42,17 +44,26 @@ const router = createBrowserRouter([
       },
       {
         path: 'company/create-profile',
-        element: <CompanyRegistration />
+        element:
+          <RestrictedRouteTo role={[Role.COMPANY]}>
+            <CompanyRegistration />
+          </RestrictedRouteTo>
       },
       {
         path: 'student/create-profile',
-        element: <StudentRegistration />
+        element:
+          <RestrictedRouteTo role={[Role.STUDENT]}>
+            <StudentRegistration />
+          </RestrictedRouteTo>
       }
     ]
   },
   {
     path: '/company',
-    element: <CompanyHome />,
+    element:
+      <RestrictedRouteTo role={[Role.COMPANY]}>
+        <CompanyHome />
+      </RestrictedRouteTo>,
     children: [
       {
         path: '',
@@ -67,22 +78,25 @@ const router = createBrowserRouter([
   },
   {
     path: '/student',
-    element: <StudentHome/>,
+    element:
+      <RestrictedRouteTo role={[Role.STUDENT]}>
+        <StudentHome />
+      </RestrictedRouteTo>,
     children: [
       {
         path: '',
-        element: <StudentDashboard/>
+        element: <StudentDashboard />
       },
       {
         path: 'my-account',
-        element: <StudentAccount/>
+        element: <StudentAccount />
       },
       {
         path: 'applied-jobs',
         element: <AppliedJobs />
       }
     ]
-  
+
   },
   {
     path: '*',

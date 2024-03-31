@@ -12,6 +12,14 @@ export const Register: React.FC = () => {
     const [email, setEmail] = React.useState("");
     const [loading, setLoading] = React.useState(false);
 
+    React.useEffect(() => {
+        const clearLocalStorage = () => {
+            localStorage.clear();
+        }
+
+        clearLocalStorage();
+    }, []);
+
     const handleLogin = async (e: any) => {
         e.preventDefault();
 

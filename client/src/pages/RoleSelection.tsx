@@ -20,6 +20,7 @@ export const RoleSelection: React.FC = () => {
 
             if (data.success) {
                 localStorage.setItem('role', data.role);
+                localStorage.setItem('__token', data.token);
 
                 switch (data.role) {
                     case 'student':

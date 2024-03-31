@@ -3,6 +3,7 @@ import { constants } from '../lib/strings'
 import { Outlet } from "react-router-dom";
 
 export const Login: React.FC = () => {
+
     return (
         <>
             <div className="flex min-h-screen">

@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { setProfile } from "@/state/slices/companySlice";
 import { toast } from "@/components/ui/use-toast";
+import axios from "axios";
 
 
 
@@ -18,6 +19,24 @@ export const CompanyHome: React.FC = () => {
 
 
     useEffect(() => {
+
+        const AppStartup = () => {
+            const token = localStorage.getItem('__token');
+
+            if(!token) {
+                toast({
+                    variant: "destructive",
+                    title: "Unauthorized",
+                    description: "Please login to continue.",
+                });
+                navigate('/login', { replace: true })
+            };
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+
+        AppStartup();
+
         const fetchProfile = async () => {
             const email = localStorage.getItem('email');
             if(email){

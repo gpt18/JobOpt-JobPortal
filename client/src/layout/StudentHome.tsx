@@ -7,6 +7,7 @@ import { setProfile } from "@/state/slices/studentSlice";
 import { toast } from "@/components/ui/use-toast";
 import { getStudentProfile } from "@/services/student";
 import { SSideBar } from "@/components/sSideBar";
+import axios from "axios";
 
 
 
@@ -18,6 +19,25 @@ export const StudentHome: React.FC = () => {
 
 
     useEffect(() => {
+
+
+        const AppStartup = () => {
+            const token = localStorage.getItem('__token');
+
+            if(!token) {
+                toast({
+                    variant: "destructive",
+                    title: "Unauthorized",
+                    description: "Please login to continue.",
+                });
+                navigate('/login', { replace: true })
+            };
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+
+        AppStartup();
+
         const fetchProfile = async () => {
             const email = localStorage.getItem('email');
             if(email){

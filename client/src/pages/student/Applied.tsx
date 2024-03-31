@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { getAppliedJobs } from "@/services/student";
 import { useAppSelector } from "@/state/hooks";
 import React from "react";
@@ -12,7 +11,7 @@ export const AppliedJobs = () => {
     React.useEffect(() => {
         const fetchAppliedJobs = async () => {
             try {
-                const { data } = await getAppliedJobs({sid});
+                const { data } = await getAppliedJobs({ sid });
                 setAppliedJobs(data.appliedJobs);
             } catch (error: any) {
                 console.log(error.message);
@@ -24,7 +23,7 @@ export const AppliedJobs = () => {
 
     return (
         <>
-        <div className="md:px-4">
+            <div className="md:px-4">
                 <div className="flex justify-between">
                     <div className="text-3xl lg:text-5xl font-light">
                         Applied Jobs
@@ -36,23 +35,23 @@ export const AppliedJobs = () => {
 
                         {
                             [...AppliedJobs].reverse().map((job: any) => (
-                                <JobCard 
-                                key={job.job._id}
-                            id={job.job._id}
-                            title={job.job.roleName}
-                            location={job.job.location}
-                            minCTC={job.job.minCTC}
-                            maxCTC={job.job.maxCTC}
-                            rr={job.job.rr}
-                            company={job.job.postedBy.companyName}
-                            logo={job.job.postedBy.companyLogo}
-                            website={job.job.postedBy.websiteLink}
-                            date={job.date} />
+                                <JobCard
+                                    key={job.job._id}
+                                    id={job.job._id}
+                                    title={job.job.roleName}
+                                    location={job.job.location}
+                                    minCTC={job.job.minCTC}
+                                    maxCTC={job.job.maxCTC}
+                                    rr={job.job.rr}
+                                    company={job.job.postedBy.companyName}
+                                    logo={job.job.postedBy.companyLogo}
+                                    website={job.job.postedBy.websiteLink}
+                                    date={job.date} />
 
                             ))
                         }
 
-                        
+
                     </div>
                 </div>
             </div>
@@ -75,14 +74,14 @@ interface JobCardProps {
 }
 
 const JobCard = ({ title, location, minCTC, maxCTC, rr, company, logo, website, date }: JobCardProps) => {
-    
+
     date = new Date(date).toLocaleDateString();
 
     return (
         <div className="border shadow rounded">
             <div className="px-4 pt-4 text-xs text-gray-600 font-bold">
-                    Applied on: {date}
-                </div>
+                Applied on: {date}
+            </div>
             <div className="space-y-2">
                 <div className="flex p-4 gap-2">
                     <div className="w-[100px] flex justify-center items-center">
@@ -100,7 +99,7 @@ const JobCard = ({ title, location, minCTC, maxCTC, rr, company, logo, website, 
                         </div>
                     </div>
                 </div>
-                
+
                 <div className="flex items-center p-4">
                     <div className="flex-1">
                         <div className="text-sm text-gray-500">
@@ -111,7 +110,7 @@ const JobCard = ({ title, location, minCTC, maxCTC, rr, company, logo, website, 
                         </div>
                     </div>
                     <div className="font-bold">
-                        You spent: ₹{rr-rr/5}
+                        You spent: ₹{rr - rr / 5}
                     </div>
 
                 </div>

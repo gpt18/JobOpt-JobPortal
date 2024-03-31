@@ -199,27 +199,25 @@ exports.handleSelectRole = async (req, res) => {
 
         if (user.role) {
 
-            const token = getJwtToken({ email: user.email, role: user.role });
-
             return res.json({
-                success: true,
+                success: false,
                 message: "Role already selected. You can't change the role once selected.",
                 role: user.role,
-                token,
                 profile: user.profile,
             });
-            
+
         }
 
         user.role = role;
         await user.save();
 
+
         if (role === "company") {
             const company = await Company.findOne({ email });
             if (company) {
                 return res.json({
-                    success: true,
-                    message: `Email already registered.`,
+                    success: false,
+                    message: `Email already registered. Login to continue.`,
                     cid: company._id,
                     role: user.role,
                     profile: user.profile,
@@ -236,12 +234,15 @@ exports.handleSelectRole = async (req, res) => {
 
             newCompany.save();
 
+            const token = getJwtToken({ email: user.email, role: user.role });
+
             return res.json({
                 success: true,
                 message: `Role selected successfully. You earn Rs. ${INITIAL_BALANCE_COMPANY} as a registration reward.`,
                 cid: newCompany._id,
                 role: user.role,
                 profile: user.profile,
+                token,
             });
 
         }
@@ -251,8 +252,8 @@ exports.handleSelectRole = async (req, res) => {
 
             if (student) {
                 return res.json({
-                    success: true,
-                    message: `Email already registered.`,
+                    success: false,
+                    message: `Email already registered. Login to continue.`,
                     sid: student._id,
                     role: user.role,
                     profile: user.profile,
@@ -270,12 +271,15 @@ exports.handleSelectRole = async (req, res) => {
 
             newStudent.save();
 
+            const token = getJwtToken({ email: user.email, role: user.role });
+
             return res.json({
                 success: true,
                 message: `Role selected successfully. You earn Rs. ${INITIAL_BALANCE_STUDENT} as a registration reward.`,
                 sid: newStudent._id,
                 role: user.role,
                 profile: user.profile,
+                token,
             });
 
         }
