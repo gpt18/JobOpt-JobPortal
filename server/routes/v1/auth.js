@@ -3,6 +3,10 @@ const { handleSendOtp, handleVerifyOtp, handlePremission } = require('../../cont
 const { addAuthPayload } = require('../../middleware/auth');
 const router =  express.Router();
 
+router.get('/', (req, res) => {
+    res.send("You Hit the Auth Route!")
+})
+
 router.post('/send-otp', handleSendOtp);
 router.post('/verify-otp', handleVerifyOtp);
 router.get('/p', addAuthPayload, handlePremission);

@@ -2,6 +2,11 @@ const express = require('express');
 const { handleGetStudentProfile, handleGetStudentTransactions, handleGetAllJob, handleApplyJob, handleGetAppliedJobs } = require('../../controllers/studentController');
 const router = express.Router();
 
+router.get('/', (req, res) => {
+    res.send("You Hit the Student Route!")
+})
+
+
 router.get('/profile/:email', handleGetStudentProfile);
 router.get('/account-history/:id', handleGetStudentTransactions);
 router.get('/all-jobs', handleGetAllJob);

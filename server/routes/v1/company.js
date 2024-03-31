@@ -6,6 +6,10 @@ const { handleGetCompanyBalance,
     handleGetAllJob } = require('../../controllers/companyController');
 const router = express.Router();
 
+router.get('/', (req, res) => {
+    res.send("You Hit the Company Route!")
+})
+
 router.get('/balance/:id', handleGetCompanyBalance);
 router.get('/profile/:email', handleGetCompanyProfile );
 router.get('/account-history/:id', handleGetCompanyTransactions);
