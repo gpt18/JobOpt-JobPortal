@@ -2,6 +2,7 @@ const otpGenerator = require("otp-generator");
 const { mailSender } = require("../utils/mailSender");
 const UserOTP = require("../models/emailOtp");
 const User = require("../models/registerdUser");
+const { getJwtToken } = require("../helper/auth");
 
 
 // Function to handle missing data
@@ -11,39 +12,31 @@ const handleMissingData = (res) => {
         message: "Missing some data."
     });
 }
-
 // Function to handle OTP verification
 const handleOtpVerification = async (res, userotp, otp) => {
-    if (userotp.otp === otp) {
-        await UserOTP.findByIdAndDelete(userotp._id);
-        let user = await User.findOne({ email: userotp.email });
-
-        if (user) {
-            return res.json({
-                success: true,
-                message: "OTP verified Successfully",
-                role: user.role,
-                profile: user.profile,
-            });
-        }
-        else {
-            user = await User.create({
-                email: userotp.email
-            });
-
-            return res.json({
-                success: true,
-                message: "OTP verified Successfully",
-                profile: user.profile,
-            });
-        }
-    }
-    else {
+    if (userotp.otp !== otp) {
         return res.json({
             success: false,
             message: "Wrong OTP"
         });
     }
+
+    await UserOTP.findByIdAndDelete(userotp._id);
+    let user = await User.findOne({ email: userotp.email }) || await User.create({ email: userotp.email });
+
+    let token;
+    if(user.role){
+        token = getJwtToken({ email: user.email, role: user.role });
+        res.cookie('__sessionid', token, { httpOnly: true, secure: true, SameSite: 'none', maxAge: 3600000 });
+    }
+
+    return res.json({
+        success: true,
+        message: user.role ? "OTP verified Successfully! Role already Selected." : "OTP verified Successfully! Proceed with the registration.",
+        role: user.role,
+        token,
+        profile: user.profile,
+    });
 }
 
 // Function to handle expired OTP

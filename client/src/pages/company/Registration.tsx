@@ -55,8 +55,7 @@ export const CompanyRegistration: React.FC = () => {
                 description: data.reward ? `You have earned ₹${data.reward} for creating profile` : undefined,
             });
 
-            navigate('/company', { replace: true });
-
+            if(data.success) navigate('/company', { replace: true });
 
         } catch (error: any) {
             toast({
@@ -92,12 +91,12 @@ export const CompanyRegistration: React.FC = () => {
                                 <Input id="companyName" name="companyName" type="text" placeholder="Example Company Pvt. Ltd" onChange={handleOnChange} required />
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="websiteLink">Website Link (+₹50)</Label>
-                                <Input id="websiteLink" name="websiteLink" type="text" placeholder="www.example.com" onChange={handleOnChange} />
+                                <Label htmlFor="websiteLink">Website Link* (+₹50)</Label>
+                                <Input id="websiteLink" name="websiteLink" type="text" placeholder="www.example.com" onChange={handleOnChange} required/>
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="companySize">Company Size (+₹20)</Label>
-                                <Select name='companySize' onValueChange={(value) => (setFormData(formData => ({ ...formData, companySize: value })))} defaultValue={formData.companySize}>
+                                <Label htmlFor="companySize">Company Size* (+₹20)</Label>
+                                <Select name='companySize' onValueChange={(value) => (setFormData(formData => ({ ...formData, companySize: value })))} defaultValue={formData.companySize} required>
                                     <SelectTrigger className="w-[180px]" id='companySize' >
                                         <SelectValue placeholder="Select company size" />
                                     </SelectTrigger>
@@ -112,8 +111,8 @@ export const CompanyRegistration: React.FC = () => {
                                 </Select>
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="companyLogo">Company Logo (Link) (+₹50)</Label>
-                                <Input id="companyLogo" name="companyLogo" type="text" placeholder="http://example.com/logo.jpg" onChange={handleOnChange} />
+                                <Label htmlFor="companyLogo">Company Logo* (Link) (+₹50)</Label>
+                                <Input id="companyLogo" name="companyLogo" type="text" placeholder="http://example.com/logo.jpg" onChange={handleOnChange} required/>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <Checkbox id="terms" checked />

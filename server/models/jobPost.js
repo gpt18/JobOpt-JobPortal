@@ -35,7 +35,8 @@ const jobPostSchema = new mongoose.Schema({
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-}, { timestamps: true });
+    timestamps: true
+});
 
 jobPostSchema.virtual('appliedCandidatesCount').get(function() {
     return this.appliedCandidates ? this.appliedCandidates.length : 0;

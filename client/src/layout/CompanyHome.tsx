@@ -23,15 +23,25 @@ export const CompanyHome: React.FC = () => {
             if(email){
                 try {
                     const { data } = await getCompanyProfile({email});
-                    dispatch(setProfile({
-                        cid: data.cid,
-                        email: data.email,
-                        balance: data.balance,
-                        name: data.name,
-                        website: data.website,
-                        size: data.size,
-                        logo: data.logo,
-                    }))
+                    
+                    if(data.profile){
+                        dispatch(setProfile({
+                            cid: data.cid,
+                            email: data.email,
+                            balance: data.balance,
+                            name: data.name,
+                            website: data.website,
+                            size: data.size,
+                            logo: data.logo,
+                        }))
+                    } else{
+                        toast({
+                            title: "Incomplete Profile",
+                            description: "Please complete your profile to continue.",
+                        });
+                        navigate('/login/company/create-profile', { replace: true })
+                    }
+
                 } catch (error: any) {
                     toast({
                         variant: "destructive",

@@ -54,10 +54,12 @@ export const OtpVerify: React.FC = () => {
                     localStorage.setItem('role', data.role);
                     switch (data.role) {
                         case 'student':
-                            navigate('/student', { replace: true });
+                            if(data.profile) navigate('/student', { replace: true });
+                            else navigate('/login/student/create-profile', { replace: true });
                             break;
                         case 'company':
-                            navigate('/company', { replace: true });
+                            if(data.profile) navigate('/company', { replace: true });
+                            else navigate('/login/company/create-profile', { replace: true });
                             break;
                     }
                 }

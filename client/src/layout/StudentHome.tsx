@@ -23,16 +23,24 @@ export const StudentHome: React.FC = () => {
             if(email){
                 try {
                     const { data } = await getStudentProfile({email});
-                    dispatch(setProfile({
-                        sid: data.sid,
-                        email: data.email,
-                        balance: data.balance,
-                        name: data.name,
-                        phone: data.phone,
-                        location: data.location,
-                        profilePic: data.profilePic,
-                        resume: data.resume,
-                    }))
+                    if(data.profile){
+                        dispatch(setProfile({
+                            sid: data.sid,
+                            email: data.email,
+                            balance: data.balance,
+                            name: data.name,
+                            phone: data.phone,
+                            location: data.location,
+                            profilePic: data.profilePic,
+                            resume: data.resume,
+                        }))
+                    } else{
+                        toast({
+                            title: "Incomplete Profile",
+                            description: "Please complete your profile to continue.",
+                        });
+                        navigate('/login/student/create-profile', { replace: true })
+                    }
                 } catch (error: any) {
                     toast({
                         variant: "destructive",

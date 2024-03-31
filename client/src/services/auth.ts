@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/v1/auth";
+const BASE_URL = `${import.meta.env.VITE_APP_API_URL}/auth`;
 
 export const sendOtp = async (payload: {
     email: string;

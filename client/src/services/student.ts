@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/v1/student";
+const BASE_URL = `${import.meta.env.VITE_APP_API_URL}/student`;
 
 export const getStudentProfile = async (payload: {
     email: string;

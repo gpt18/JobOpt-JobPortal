@@ -1,3 +1,4 @@
+const { getJwtToken } = require("../helper/auth");
 const Company = require("../models/company");
 const User = require("../models/registerdUser");
 const Student = require("../models/student");
@@ -20,12 +21,14 @@ exports.handleCreateCompanyProfile = async (req, res) => {
     const { companyName, websiteLink, companySize, companyLogo, email } = req.body;
 
 
-    if (!email || !companyName) {
+    if (!email || !companyName || !websiteLink || !companySize || !companyLogo) {
         return res.json({
             success: false,
-            message: "Missing data. Please provide the company name and email.",
+            message: "Missing data. Please provide all details.",
         });
     }
+
+    
 
     let company;
     try {
@@ -195,12 +198,17 @@ exports.handleSelectRole = async (req, res) => {
         }
 
         if (user.role) {
+
+            const token = getJwtToken({ email: user.email, role: user.role });
+
             return res.json({
                 success: true,
                 message: "Role already selected. You can't change the role once selected.",
                 role: user.role,
+                token,
                 profile: user.profile,
             });
+            
         }
 
         user.role = role;

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/v1/company";
+const BASE_URL = `${import.meta.env.VITE_APP_API_URL}/company`;
 
 export const getCompanyBalance = async (payload: {
     cid: string;

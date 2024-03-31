@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/v1/register";
+const BASE_URL = `${import.meta.env.VITE_APP_API_URL}/register`;
 
 export const selectRole = async (payload: {
     email: string;

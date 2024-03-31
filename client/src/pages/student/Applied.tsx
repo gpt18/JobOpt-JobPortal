@@ -111,7 +111,7 @@ const JobCard = ({ title, location, minCTC, maxCTC, rr, company, logo, website, 
                         </div>
                     </div>
                     <div className="font-bold">
-                        You spent: ₹{rr}
+                        You spent: ₹{rr-rr/5}
                     </div>
 
                 </div>

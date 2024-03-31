@@ -5,7 +5,7 @@ export const Landing: React.FC = () => {
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-black">
             <Button variant="secondary" className="bg-white text-black">
-                <Link to={'/login'}>Get Started</Link>
+                <Link to={'/login'}>Login</Link>
             </Button>
         </div>
     );

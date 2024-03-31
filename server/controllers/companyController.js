@@ -1,6 +1,7 @@
 const Company = require("../models/company");
 const JobPost = require("../models/jobPost");
 const { mailSender } = require("../utils/mailSender");
+const User = require("../models/registerdUser");
 
 exports.handleGetCompanyBalance = async (req, res) => {
 
@@ -39,6 +40,7 @@ exports.handleGetCompanyProfile = async (req, res) => {
 
     try {
         const company = await Company.findOne({email});
+        const user = await User.findOne({email});
 
         return res.json({
             cid: company._id,
@@ -46,11 +48,13 @@ exports.handleGetCompanyProfile = async (req, res) => {
             balance: company.balance,
             name: company.companyName,
             website: company.websiteLink,
-            size: company.companySize,
+            size: company.companySize, 
             logo: company.companyLogo,
+            profile: user.profile,
             success: true,
             message: "Company Profile fetched successfully"
         });
+
     } catch (error) {
         console.log(error.message);
         return res.json({success: false, message: "Invalid Request", error: error.message})

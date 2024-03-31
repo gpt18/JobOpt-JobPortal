@@ -2,6 +2,7 @@ const Company = require("../models/company");
 const JobPost = require("../models/jobPost");
 const Student = require("../models/student");
 const { mailSender } = require("../utils/mailSender");
+const User = require("../models/registerdUser");
 
 exports.handleGetStudentProfile = async (req, res) => {
     const email = req.params.email;
@@ -13,6 +14,7 @@ exports.handleGetStudentProfile = async (req, res) => {
 
     try {
         const student = await Student.findOne({email});
+        const user = await User.findOne({email});
 
         return res.json({
             sid: student._id,
@@ -23,6 +25,7 @@ exports.handleGetStudentProfile = async (req, res) => {
             location: student.location,
             phone: student.phone,
             profilePic: student.profilePic,
+            profile: user.profile,
             success: true,
             message: "Student Profile fetched successfully"
         });
