@@ -57,6 +57,7 @@ export const StudentDashboard: React.FC = () => {
                     <div className="space-y-4">
 
                         {
+                            jobs && jobs.length > 0 ?
                             [...jobs].reverse().map((job: any) => (
                                 <JobCard
                                     key={job._id}
@@ -71,6 +72,10 @@ export const StudentDashboard: React.FC = () => {
                                     logo={job.postedBy.companyLogo}
                                     website={job.postedBy.websiteLink} />
                             ))
+                            :
+                            <div className="text-center text-lg font-semibold">
+                                No Jobs Found
+                            </div>
 
                         }
 

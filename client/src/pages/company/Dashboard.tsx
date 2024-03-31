@@ -71,16 +71,21 @@ export const CompanyDashboard: React.FC = () => {
                     <div className="space-y-4">
 
                         {
-                            [...jobs].reverse().map((job: any) => (
-                                <JobCard
-                                    key={job._id}
-                                    title={job.roleName}
-                                    location={job.location}
-                                    minCTC={job.minCTC}
-                                    maxCTC={job.maxCTC}
-                                    applied={job.appliedCandidates.length}
-                                    rr={job.rr} />
-                            ))
+                            jobs.length > 0 ?
+                                [...jobs].reverse().map((job: any) => (
+                                    <JobCard
+                                        key={job._id}
+                                        title={job.roleName}
+                                        location={job.location}
+                                        minCTC={job.minCTC}
+                                        maxCTC={job.maxCTC}
+                                        applied={job.appliedCandidates.length}
+                                        rr={job.rr} />
+                                ))
+                                :
+                                <div className="text-center text-lg font-semibold">
+                                    No Posted Jobs Found
+                                </div>
 
                         }
 

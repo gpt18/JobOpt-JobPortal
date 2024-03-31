@@ -83,7 +83,7 @@ const ProfileDetails = () => {
         <>
 
             <div className="w-[150px] h-[150px]">
-                <img src={profilePic} alt={name} className="object-cover rounded-full border" />
+                <img src={profilePic} alt={name} className="w-[150px] h-[150px] object-cover rounded-full border" />
             </div>
             <div className="flex flex-col items-center">
                 <div className="font-medium">Student Profile</div>

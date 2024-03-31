@@ -34,6 +34,7 @@ export const AppliedJobs = () => {
                     <div className="space-y-4">
 
                         {
+                            AppliedJobs.length > 0 ?
                             [...AppliedJobs].reverse().map((job: any) => (
                                 <JobCard
                                     key={job.job._id}
@@ -49,6 +50,10 @@ export const AppliedJobs = () => {
                                     date={job.date} />
 
                             ))
+                            :
+                            <div className="text-center text-lg font-semibold">
+                                No Applied Jobs Found
+                            </div>
                         }
 
 

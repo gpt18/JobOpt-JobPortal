@@ -29,7 +29,7 @@ export const CSideBar: React.FC = () => {
                     </div>
                     <div className="flex flex-col items-center space-y-4">
                         <div className="max-w-[150px]">
-                            <img src={logo} alt="" className="" />
+                            <img src={logo} alt={name} className="w-[150px] h-[150px] object-cover" />
                         </div>
                         <div className="flex flex-col items-center">
                             <div className="font-medium">Company Profile</div>
@@ -60,7 +60,7 @@ export const CSideBar: React.FC = () => {
                     <div className="grid grid-rows-12">
                         <div className="row-span-3 flex flex-col items-center  p-4 space-y-4 border-b">
                             <div className="max-w-[150px] ">
-                                <img src={logo} alt="" className="" />
+                                <img src={logo} alt="" className="w-[150px] h-[150px] object-cover" />
                             </div>
 
                             <div className="flex flex-col items-center space-y-2">

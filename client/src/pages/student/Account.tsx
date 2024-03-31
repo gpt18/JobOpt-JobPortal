@@ -13,7 +13,7 @@ export const StudentAccount: React.FC = () => {
 
     React.useEffect(() => {
         document.title = "Student Account | Job Portal";
-    },[]);
+    }, []);
 
     React.useEffect(() => {
         const fetchTransactions = async () => {
@@ -52,12 +52,19 @@ export const StudentAccount: React.FC = () => {
                 <div className="my-10">
                     <div className="text-xl lg:text-2xl font-light space-x-2">
                         <span>Transaction History</span>
-                        <span><Button variant={"ghost"} size={"icon"}><RotateCcw size={16}/></Button></span>
+                        <span><Button variant={"ghost"} size={"icon"}><RotateCcw size={16} /></Button></span>
                     </div>
                     <div className="my-3 border divide-y-2 rounded-md">
-                        {[...transactions].reverse().map((t: any) => (
-                            <TransactionCard key={t._id} title={t.reason} date={t.date} amount={t.amount} type={t.type} id={t._id} />
-                        ))}
+                        {
+                            transactions.length > 0 ?
+                                [...transactions].reverse().map((t: any) => (
+                                    <TransactionCard key={t._id} title={t.reason} date={t.date} amount={t.amount} type={t.type} id={t._id} />
+                                ))
+                                :
+                                <div className="text-center text-lg font-semibold p-4">
+                                    No Transactions Found
+                                </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -76,16 +83,16 @@ interface TransactionProps {
 
 const TransactionCard = ({ title, date, amount, type, id }: TransactionProps) => {
     const d = new Date(date);
-    const formattedDate = d.toLocaleString('en-US', {weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true}); 
+    const formattedDate = d.toLocaleString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
 
     return (
         <div className="py-3 px-2 flex justify-between">
             <div>
                 <div>
-                <Badge variant={"secondary"} className={type === "credit" ? "bg-green-700 text-white" : "bg-red-700 text-white"}>
-                {type}
-                </Badge>
-                <Badge variant={"secondary"}>Txn: {id}</Badge>
+                    <Badge variant={"secondary"} className={type === "credit" ? "bg-green-700 text-white" : "bg-red-700 text-white"}>
+                        {type}
+                    </Badge>
+                    <Badge variant={"secondary"}>Txn: {id}</Badge>
                 </div>
                 <div className="font-semibold text-lg">{title}</div>
                 <div className="text-gray-600 text-sm">{formattedDate}</div>
