@@ -24,11 +24,11 @@ export const RoleSelection: React.FC = () => {
                 switch (data.role) {
                     case 'student':
                         if(data.profile) navigate('/student', { replace: true });
-                        else navigate('login/student/create-profile', { replace: true });
+                        else navigate('/login/student/create-profile', { replace: true });
                         break;
                     case 'company':
                         if(data.profile) navigate('/company', { replace: true });
-                        else navigate('login/company/create-profile', { replace: true });
+                        else navigate('/login/company/create-profile', { replace: true });
                         break;
                 }
             }else{

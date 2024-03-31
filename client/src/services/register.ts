@@ -24,3 +24,19 @@ export const createCompanyProfile = async (payload: {
     const res = await axios.post(`${BASE_URL}/company/create`, payload);
     return res;
 }
+
+export const createStudentProfile = async (payload: {
+    name: string;
+    resume: string;
+    phone: string;
+    profilePic: string;
+    location: string;
+    email?: string;
+}) => {
+    const email = localStorage.getItem('email');
+    if(email) {
+        payload = {...payload, email};
+    }
+    const res = await axios.post(`${BASE_URL}/student/create`, payload);
+    return res;
+}

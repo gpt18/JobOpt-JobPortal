@@ -13,6 +13,11 @@ import { CompanyDashboard } from './pages/company/Dashboard';
 import { CompanyAccount } from './pages/company/Account';
 import { Provider } from 'react-redux'
 import { store } from './state/store';
+import { StudentHome } from './layout/StudentHome';
+import { StudentRegistration } from './pages/student/Registration';
+import { StudentAccount } from './pages/student/Account';
+import { StudentDashboard } from './pages/student/Dashboard';
+import { AppliedJobs } from './pages/student/Applied';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: 'company/create-profile',
         element: <CompanyRegistration />
+      },
+      {
+        path: 'student/create-profile',
+        element: <StudentRegistration />
       }
     ]
   },
@@ -58,7 +67,22 @@ const router = createBrowserRouter([
   },
   {
     path: '/student',
-    element: <div>Student</div>
+    element: <StudentHome/>,
+    children: [
+      {
+        path: '',
+        element: <StudentDashboard/>
+      },
+      {
+        path: 'my-account',
+        element: <StudentAccount/>
+      },
+      {
+        path: 'applied-jobs',
+        element: <AppliedJobs />
+      }
+    ]
+  
   },
   {
     path: '*',

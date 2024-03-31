@@ -24,10 +24,13 @@ require('./config/database')
 const authROuter = require('./routes/v1/auth')
 const registerRouter = require('./routes/v1/register')
 const companyRouter = require('./routes/v1/company')
+const studentRouter = require('./routes/v1/student')
 
 app.use('/api/v1/auth', authROuter)
 app.use('/api/v1/register', registerRouter)
 app.use('/api/v1/company', companyRouter)
+app.use('/api/v1/student', studentRouter)
+
 
 
 

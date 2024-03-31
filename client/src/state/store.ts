@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import  companyReducer  from './slices/companySlice';
+import studentReducer  from './slices/studentSlice';
 
 export const store = configureStore({
     reducer: {
-        company: companyReducer
+        company: companyReducer,
+        student: studentReducer,
     },
 });
 

@@ -94,7 +94,7 @@ exports.handlePostJob = async (req, res) => {
         if (!company) return res.json({success: false, message: "Company not found"});
 
 
-        const rr = 2*(roleName.length) + 5*(location.length);
+        const rr = parseFloat((2*(roleName.length) + 5*(location.length)).toFixed(2));
 
         if(company.balance < rr) return res.json({success: false, message: "Oops! You don't have any rupees in the account"})
 
@@ -108,6 +108,7 @@ exports.handlePostJob = async (req, res) => {
         }
 
         const newJob = await JobPost.create(job);
+
 
         company.balance -= rr;
         company.accountHistory.push({

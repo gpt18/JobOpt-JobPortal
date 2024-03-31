@@ -32,7 +32,7 @@ export const CSideBar: React.FC = () => {
                             <img src={logo} alt="" className="" />
                         </div>
                         <div className="flex flex-col items-center">
-                            <div className="font-medium">Profile Details</div>
+                            <div className="font-medium">Company Profile</div>
                             <div className="text-xl mb-2">{name}</div>
                             <div className="flex space-x-2">
                                 <Badge variant={"secondary"}>

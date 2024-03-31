@@ -1,24 +1,24 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { getAccountHistory } from "@/services/company";
+import { getAccountHistory } from "@/services/student";
 import { useAppSelector } from "@/state/hooks";
 import { RotateCcw } from "lucide-react";
 import React from "react";
 
-export const CompanyAccount: React.FC = () => {
-    const { balance, cid } = useAppSelector(s => s.company);
+export const StudentAccount: React.FC = () => {
+    const { balance, sid } = useAppSelector(s => s.student);
 
     const [transactions, setTransactions] = React.useState([]);
 
     React.useEffect(() => {
-        document.title = "Company Account | Job Portal";
+        document.title = "Student Account | Job Portal";
     },[]);
 
     React.useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const { data } = await getAccountHistory({ id: cid });
+                const { data } = await getAccountHistory({ id: sid });
                 setTransactions(data.transactions);
             } catch (error: any) {
                 toast({
@@ -29,8 +29,8 @@ export const CompanyAccount: React.FC = () => {
             }
         }
 
-        if (cid) fetchTransactions();
-    }, [cid]);
+        if (sid) fetchTransactions();
+    }, [sid]);
 
 
     return (
@@ -56,7 +56,7 @@ export const CompanyAccount: React.FC = () => {
                     </div>
                     <div className="my-3 border divide-y-2 rounded-md">
                         {[...transactions].reverse().map((t: any) => (
-                            <TransactionCard key={t.id} title={t.reason} date={t.date} amount={t.amount} type={t.type} id={t._id} />
+                            <TransactionCard key={t._id} title={t.reason} date={t.date} amount={t.amount} type={t.type} id={t._id} />
                         ))}
                     </div>
                 </div>

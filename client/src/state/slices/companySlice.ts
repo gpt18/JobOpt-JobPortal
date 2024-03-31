@@ -39,13 +39,7 @@ const companySlice = createSlice({
     initialState,
     reducers: {
         setProfile: (state, action) => {
-            state.cid = action.payload.cid;
-            state.name = action.payload.name;
-            state.website = action.payload.website;
-            state.size = action.payload.size;
-            state.logo = action.payload.logo;
-            state.email = action.payload.email;
-            state.balance = action.payload.balance;
+            Object.assign(state, action.payload);
         },
         updatePost: (state, action) => {
             state.addJob = {

@@ -1,7 +1,10 @@
 const Company = require("../models/company");
 const User = require("../models/registerdUser");
+const Student = require("../models/student");
 
 const INITIAL_BALANCE_COMPANY = 200;
+const INITIAL_BALANCE_STUDENT = 300;
+
 const ROLE_ALREADY_SELECTED_MESSAGE = "Role already selected";
 const USER_NOT_FOUND_MESSAGE = "User not found. Login again for new registration.";
 const INCOMPLETE_DATA_MESSAGE = "Incomplete data provided.";
@@ -119,6 +122,56 @@ exports.handleCreateCompanyProfile = async (req, res) => {
     });
 }
 
+exports.handleCreateStudentProfile = async (req, res) => {
+    const { name, resume, phone, profilePic, location, email } = req.body;
+
+    if (!name || !resume || !phone || !profilePic || !location || !email) {
+        return res.json({
+            success: false,
+            message: "Missing data. Please provide all the details.",
+        });
+    }
+
+    let student;
+    try {
+        student = await Student.findOne({ email });
+
+        if(!student) {
+            return res.json({
+                success: false,
+                message: "User not found. Login again for new registration.",
+            });
+        }
+
+        const payload = {
+            name,
+            resume,
+            phone,
+            profilePic,
+            location,
+        }
+
+        student = Object.assign(student, payload);
+
+        student.save();
+
+        await User.findOneAndUpdate({ email }, { profile: true });
+
+        return res.json({
+            success: true,
+            message: "Student Profile Created Successfully",
+            reward: INITIAL_BALANCE_STUDENT,
+        });
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: error.message,
+        });
+    }
+
+}
+
 const sendResponse = (res, success, message, cid) => {
     const response = { success, message };
     if (cid) {
@@ -179,6 +232,40 @@ exports.handleSelectRole = async (req, res) => {
                 success: true,
                 message: `Role selected successfully. You earn Rs. ${INITIAL_BALANCE_COMPANY} as a registration reward.`,
                 cid: newCompany._id,
+                role: user.role,
+                profile: user.profile,
+            });
+
+        }
+
+        if (role === "student") {
+            const student = await Student.findOne({ email });
+
+            if (student) {
+                return res.json({
+                    success: true,
+                    message: `Email already registered.`,
+                    sid: student._id,
+                    role: user.role,
+                    profile: user.profile,
+                });
+            }
+
+            const newStudent = await Student.create({ email: user.email, balance: INITIAL_BALANCE_STUDENT });
+
+            newStudent.accountHistory.push({
+                amount: INITIAL_BALANCE_STUDENT,
+                type: "credit",
+                date: new Date(),
+                reason: "Reward for registration."
+            });
+
+            newStudent.save();
+
+            return res.json({
+                success: true,
+                message: `Role selected successfully. You earn Rs. ${INITIAL_BALANCE_STUDENT} as a registration reward.`,
+                sid: newStudent._id,
                 role: user.role,
                 profile: user.profile,
             });

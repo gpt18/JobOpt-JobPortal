@@ -82,7 +82,7 @@ export const CompanyRegistration: React.FC = () => {
 
                 <Card className="w-[350px] mx-auto">
                     <CardHeader>
-                        <CardTitle>Create Profile</CardTitle>
+                        <CardTitle>Create Company Profile</CardTitle>
                         <CardDescription>Provide your company details.</CardDescription>
                     </CardHeader>
                     <CardContent>

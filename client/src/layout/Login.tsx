@@ -5,9 +5,9 @@ import { Outlet } from "react-router-dom";
 export const Login: React.FC = () => {
     return (
         <>
-            <div className="flex h-screen">
+            <div className="flex min-h-screen">
                 <section id="gp-login-section-one" className="hidden md:block w-1/2  bg-black text-white">
-                    <div className="flex gap-2 p-10">
+                    <div className="flex gap-2 p-10 sticky top-0">
                         <LayoutGridIcon /> {constants.APP_NAME}
                     </div>
                 </section>
