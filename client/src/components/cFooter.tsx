@@ -3,7 +3,7 @@ export const Footer: React.FC = () => {
         <>
             <div id="footer">
                 <div className="font-thin text-center p-5">
-                    Full stack web developer assignment
+                    Developed by Guddu Prajapati with 💖
                 </div>
             </div>
         </>

@@ -2,7 +2,7 @@ const { verifyJwtToken, getJwtPayload } = require("../helper/auth");
 
 exports.addAuthPayload = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    if(!authHeader) return res.status(401).json({
+    if(!authHeader) return res.json({
         message: "Unauthorized. Please provide valid credentials.",
         success: false
     });
@@ -10,7 +10,7 @@ exports.addAuthPayload = (req, res, next) => {
     const token = authHeader.split("Bearer ")[1];
     const valid = verifyJwtToken(token);
     
-    if(!valid) return res.status(401).json({
+    if(!valid) return res.json({
         message: "Unauthorized. Please provide valid credentials.",
         success: false
     });

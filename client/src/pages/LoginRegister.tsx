@@ -38,6 +38,7 @@ export const Register: React.FC = () => {
 
         } catch (error: any) {
             toast({
+                variant: "destructive",
                 description: `${error.message}`
             });
             setLoading(false);
