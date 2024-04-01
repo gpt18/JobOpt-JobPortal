@@ -138,7 +138,7 @@ export const  StudentRegistration: React.FC = () => {
                                     <SelectContent >
                                         <SelectGroup >
                                             <SelectLabel>Available Locations</SelectLabel>
-                                            <SelectItem value="1-10">1-10</SelectItem>
+                                            
                                             {
                                                 indianCities.map((city: any) => (
                                                     <SelectItem key={city.id} value={city.name}>{city.name} - {city.state}</SelectItem>
