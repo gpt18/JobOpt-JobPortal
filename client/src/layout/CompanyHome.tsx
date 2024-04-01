@@ -17,11 +17,11 @@ export const CompanyHome: React.FC = () => {
     const { balance, email } = useAppSelector(state => state.company);
     const dispatch = useAppDispatch();
 
+    const token = localStorage.getItem('__token');
 
     useEffect(() => {
-
         const AppStartup = () => {
-            const token = localStorage.getItem('__token');
+           
 
             if(!token) {
                 toast({
@@ -35,7 +35,15 @@ export const CompanyHome: React.FC = () => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         }
 
-        AppStartup();
+        if(token){
+            AppStartup();
+        }
+        
+    }, [token])
+
+
+    useEffect(() => {
+
 
         const fetchProfile = async () => {
             const email = localStorage.getItem('email');
